@@ -32,6 +32,7 @@ var prefix = (process.env.PREFIX);
 client.on("message", (message) => {
 const args = message.content.slice(prefix.length).trim().split(/ +/g);
 const command = args.shift().toLowerCase();
+
 if (msg.content.startsWith(prefix+"pokemon")){
     var pkmn = msg.content.toString().toLowerCase();
     pkmn = pkmn.substring(9);
@@ -58,7 +59,7 @@ if (msg.content.startsWith(prefix+"pokemon")){
 
 
 
-  if (command === 'ping') {
+  if (msg.content.startsWith(prefix+"ping")) {
   
 
     let ping = Math.floor(message.client.ping);
