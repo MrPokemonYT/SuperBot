@@ -1,4 +1,5 @@
 const { Client, MessageEmbed } = require('discord.js');
+const Discord = require("discord.js");
 var fs = require('fs');
 var ytdl = require('ytdl-core');
 var voiceChannel;
