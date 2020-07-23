@@ -44,7 +44,7 @@ if (message.content.startsWith(prefix+"pokemon")){
             .setColor("RANDOM")
             .setThumbnail(`https://cdn.glitch.com/d3872f22-6987-4c30-90d1-3e58e3f83953%2Fico.png?v=1595496208978`)
             .setTitle("**Pokémon**")
-            .setImage('https://cdn.glitch.com/d3872f22-6987-4c30-90d1-3e58e3f83953%2Fpokedex.png?v=1595497624647')
+            .setImage('https://cdn.glitch.com/d3872f22-6987-4c30-90d1-3e58e3f83953%2Fico.png?v=1595496208978')
             .setAuthor( "PokeDex",'https://cdn.glitch.com/d3872f22-6987-4c30-90d1-3e58e3f83953%2Fpokedex.png?v=1595497624647')
             .addField("*Número:*", pokemon[i]._nb, true)
             .addField("*Nombre:*", pokemon[i]._engName, true)
