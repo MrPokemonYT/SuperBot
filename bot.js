@@ -33,8 +33,8 @@ client.on("message", (message) => {
 const args = message.content.slice(prefix.length).trim().split(/ +/g);
 const command = args.shift().toLowerCase();
 
-if (msg.content.startsWith(prefix+"pokemon")){
-    var pkmn = msg.content.toString().toLowerCase();
+if (message.content.startsWith(prefix+"pokemon")){
+    var pkmn = message.content.toString().toLowerCase();
     pkmn = pkmn.substring(9);
     for(var i=0;i<pokemon.length;i++){
         if(pkmn == pokemon[i]._engName.toLowerCase() || pkmn == pokemon[i]._frName.toLowerCase() || pkmn == pokemon[i]._nb){
@@ -59,7 +59,7 @@ if (msg.content.startsWith(prefix+"pokemon")){
 
 
 
-  if (msg.content.startsWith(prefix+"ping")) {
+  if (message.content.startsWith(prefix+"ping")) {
   
 
     let ping = Math.floor(message.client.ping);
