@@ -1,11 +1,48 @@
 const { Client, MessageEmbed } = require('discord.js');
 const client = new Client({ partials: ['MESSAGE', 'REACTION']});
 client.login(process.env.BOT_TOKEN);
+const guildInvites = new Map();
+let estados = [">>ping para ver el lag", "Se vienen nuevos comandos", "GG"]
+let ac = ["WATCHING", "PLAYING"]
 
+client.on('inviteCreate', async invite => guildInvites.set(invite.guild.id, await invite.guild.fetchInvites()));
 client.on('ready', () => {
+    setInterval(function(){
+        let estado = estados[Math.floor(Math.random()*estados.length)]
+        let acs = ac[Math.floor(Math.random()*ac.length)]
+        bot.user.setPresence({ activity: {type: acs, name: estado  },  status:'online'});
+      }, 5000)
     console.log(`${client.user.tag} listo`);
+    client.guilds.cache.forEach(guild => {
+        guild.fetchInvites()
+            .then(invites => guildInvites.set(guild.id, invites))
+            .catch(err => console.log(err));
+    });
 });
+
+client.on('guildMemberAdd', async member => {
+    const cachedInvites = guildInvites.get(member.guild.id);
+    const newInvites = await member.guild.fetchInvites();
+    guildInvites.set(member.guild.id, newInvites);
+    try {
+        const usedInvite = newInvites.find(inv => cachedInvites.get(inv.code).uses < inv.uses);
+        const embed = new MessageEmbed()
+            .setDescription(`${member.user.tag} is the ${member.guild.memberCount} to join.\nJoined using ${usedInvite.inviter.tag}\nNumber of uses: ${usedInvite.uses}`)
+            .setTimestamp()
+            .setTitle(`${usedInvite.url}`);
+        const welcomeChannel = member.guild.channels.cache.find(channel => channel.id === '725411095631757476');
+        if(welcomeChannel) {
+            welcomeChannel.send(embed).catch(err => console.log(err));
+        }
+    }
+    catch(err) {
+        console.log(err);
+    }
+});
+
+
 var prefix = (process.env.PREFIX);
+
 
 client.on("message", (message) => {
 const args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -24,59 +61,6 @@ const command = args.shift().toLowerCase();
             });
             }
 
-client.on('messageReactionAdd', async (reaction, user) => {
-    const handleStarboard = async () => {
-        const starboard = client.channels.cache.find(channel => channel.name.toLowerCase() === 'starboard');
-        const msgs = await starboard.messages.fetch({ limit: 100 });
-        const existingMsg = msgs.find(msg => 
-            msg.embeds.length === 1 ?
-            (msg.embeds[0].footer.text.startsWith(reaction.message.id) ? true : false) : false);
-        if(existingMsg) existingMsg.edit(`${reaction.count} - 🌟`);
-        else {
-            const embed = new MessageEmbed()
-                .setAuthor(reaction.message.author.tag, reaction.message.author.displayAvatarURL())
-                .addField('Url', reaction.message.url)
-                .setDescription(reaction.message.content)
-                .setFooter(reaction.message.id + ' - ' + new Date(reaction.message.createdTimestamp));
-            if(starboard)
-                starboard.send('1 - 🌟', embed);
-        }
-    }
-    if(reaction.emoji.name === '🌟') {
-        if(reaction.message.channel.name.toLowerCase() === 'starboard') return;
-        if(reaction.message.partial) {
-            await reaction.fetch();
-            await reaction.message.fetch();
-            handleStarboard();
-        }
-        else
-            handleStarboard();
-    }
+
 });
 
-client.on('messageReactionRemove', async (reaction, user) => {
-    const handleStarboard = async () => {
-        const starboard = client.channels.cache.find(channel => channel.name.toLowerCase() === 'starboard');
-        const msgs = await starboard.messages.fetch({ limit: 100 });
-        const existingMsg = msgs.find(msg => 
-            msg.embeds.length === 1 ? 
-            (msg.embeds[0].footer.text.startsWith(reaction.message.id) ? true : false) : false);
-        if(existingMsg) {
-            if(reaction.count === 0)
-                existingMsg.delete({ timeout: 2500 });
-            else
-                existingMsg.edit(`${reaction.count} - 🌟`)
-        };
-    }
-    if(reaction.emoji.name === '🌟') {
-        if(reaction.message.channel.name.toLowerCase() === 'starboard') return;
-        if(reaction.message.partial) {
-            await reaction.fetch();
-            await reaction.message.fetch();
-            handleStarboard();
-        }
-        else
-            handleStarboard();
-    }
-});
-});
