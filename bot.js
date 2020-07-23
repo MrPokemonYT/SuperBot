@@ -20,14 +20,18 @@ client.on('ready', () => {
     });
 });
 
+
+
+
 client.on('guildMemberAdd', async member => {
+
     const cachedInvites = guildInvites.get(member.guild.id);
     const newInvites = await member.guild.fetchInvites();
     guildInvites.set(member.guild.id, newInvites);
     try {
         const usedInvite = newInvites.find(inv => cachedInvites.get(inv.code).uses < inv.uses);
         const embed = new MessageEmbed()
-            .setDescription(`${member.user.tag} is the ${member.guild.memberCount} to join.\nJoined using ${usedInvite.inviter.tag}\nNumber of uses: ${usedInvite.uses}`)
+            .setDescription(`${member.user.tag} es el  ${member.guild.memberCount} en unirse.\nSe ha unido usando la invitacion de  ${usedInvite.inviter.tag}\nNumero de usos de la invitacion: ${usedInvite.uses}`)
             .setTimestamp()
             .setTitle(`${usedInvite.url}`);
         const welcomeChannel = member.guild.channels.cache.find(channel => channel.id === '725411095631757476');
@@ -62,5 +66,36 @@ const command = args.shift().toLowerCase();
             }
 
 
+});
+client.on('message', async message => {
+    if(message.author.bot) return;
+    if(message.content.toLowerCase().startsWith('!pokemon')) {
+        const pokemon = message.content.toLowerCase().split(" ")[1];
+        try {
+            const pokeData = await getPokemon(pokemon);
+            const { 
+                sprites, 
+                stats, 
+                weight, 
+                name, 
+                id, 
+                base_experience,
+                abilities,
+                types
+            } = pokeData;
+            const embed = new MessageEmbed();
+            embed.setTitle(`${name} #${id}`)
+            embed.setThumbnail(`${sprites.front_default}`);
+            stats.forEach(stat => embed.addField(stat.stat.name, stat.base_stat, true));
+            types.forEach(type => embed.addField('Type', type.type.name, true));
+            embed.addField('Weight', weight);
+            embed.addField('Base Experience', base_experience);
+            message.channel.send(embed);
+        }
+        catch(err) {
+            console.log(err);
+            message.channel.send(`Pokemon ${pokemon} does not exist.`);
+        }
+    }
 });
 
