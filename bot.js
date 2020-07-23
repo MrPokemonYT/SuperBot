@@ -2,6 +2,7 @@ const { Client, MessageEmbed } = require('discord.js');
 const Discord = require("discord.js");
 var fs = require('fs');
 var ytdl = require('ytdl-core');
+const streamOptions = { seek: 0, volume: 1 };
 var voiceChannel;
 var pokemon = require('./db/pokemon');
 const client = new Client({ partials: ['MESSAGE', 'REACTION']});
