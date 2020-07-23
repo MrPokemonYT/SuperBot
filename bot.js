@@ -1,8 +1,10 @@
 const { Client, MessageEmbed } = require('discord.js');
+var fs = require('fs');
+var ytdl = require('ytdl-core');
+var voiceChannel;
 var pokemon = require('./db/pokemon');
 const client = new Client({ partials: ['MESSAGE', 'REACTION']});
 client.login(process.env.BOT_TOKEN);
-const guildInvites = new Map();
 let estados = [">>ping para ver el lag", "Se vienen nuevos comandos", "GG"]
 let ac = ["WATCHING", "PLAYING"]
 
