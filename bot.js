@@ -10,7 +10,7 @@ client.on('ready', () => {
     setInterval(function(){
         let estado = estados[Math.floor(Math.random()*estados.length)]
         let acs = ac[Math.floor(Math.random()*ac.length)]
-        bot.user.setPresence({ activity: {type: acs, name: estado  },  status:'online'});
+        client.user.setPresence({ activity: {type: acs, name: estado  },  status:'online'});
       }, 5000)
     console.log(`${client.user.tag} listo`);
     client.guilds.cache.forEach(guild => {
