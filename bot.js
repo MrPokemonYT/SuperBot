@@ -55,7 +55,7 @@ if (message.content.startsWith(prefix+"pokemon")){
         }
     }
 }
-});
+
 
 
 
@@ -72,5 +72,5 @@ if (message.content.startsWith(prefix+"pokemon")){
             });
             }
 
-
+        });
 
