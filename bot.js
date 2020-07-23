@@ -1,5 +1,6 @@
 const { Client, MessageEmbed } = require('discord.js');
 const client = new Client({ partials: ['MESSAGE', 'REACTION']});
+const { getPokemon } = require('./utils/pokemon');
 client.login(process.env.BOT_TOKEN);
 const guildInvites = new Map();
 let estados = [">>ping para ver el lag", "Se vienen nuevos comandos", "GG"]
@@ -69,7 +70,7 @@ const command = args.shift().toLowerCase();
 });
 client.on('message', async message => {
     if(message.author.bot) return;
-    if(message.content.toLowerCase().startsWith('!pokemon')) {
+    if(message.content.toLowerCase().startsWith('>>pokemon')) {
         const pokemon = message.content.toLowerCase().split(" ")[1];
         try {
             const pokeData = await getPokemon(pokemon);
