@@ -46,7 +46,7 @@ if (message.content.startsWith(prefix+"pokemon")){
             .setTitle("**Pokémon**")
             .addField("**Número:**", pokemon[i]._nb, false)
             .addField("**Nombre:**", pokemon[i]._engName, false)
-            .addField("**Tipo:**", pokemon[i]._type+" "+_type2, false)
+            .addField("**Tipo:**", pokemon[i]._type+" "+pokemon[i]._type2, false)
 
             var text = "__You selected__\n";
             text += "**N° "+pokemon[i]._nb+"** \n";
