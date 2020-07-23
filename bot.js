@@ -34,6 +34,24 @@ var prefix = (process.env.PREFIX);
 client.on("message", (message) => {
 const args = message.content.slice(prefix.length).trim().split(/ +/g);
 const command = args.shift().toLowerCase();
+if(msg.content.startsWith(prefix+"music ")){
+    voiceChannel = bot.channels.find("name","Music");
+    var text = msg.content.toString();
+    text = text.substring(7);
+  console.log("The bot will join "+voiceChannel.name);
+  voiceChannel.join()
+    .then(connection => {
+        const stream = ytdl(text, {filter : 'audioonly'});
+        const dispatcher = connection.playStream(stream, streamOptions);})
+    .catch(console.error);
+}
+else if(msg.content == prefix+"stop"){
+    voiceChannel = bot.channels.find("name","Music");
+      console.log("The bot will leave "+voiceChannel.name);
+    voiceChannel.leave();
+}
+
+
 
 if (message.content.startsWith(prefix+"pokemon")){
     var pkmn = message.content.toString().toLowerCase();
