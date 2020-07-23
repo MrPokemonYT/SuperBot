@@ -1,6 +1,9 @@
 {
   "name": "superbot",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.x"
+  },
   "description": "El mejor bot que voy hacer",
   "main": "bot.js",
   "scripts": {
