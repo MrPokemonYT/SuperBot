@@ -1,6 +1,6 @@
 const { Client, MessageEmbed } = require('discord.js');
+var pokemon = require('./db/pokemon');
 const client = new Client({ partials: ['MESSAGE', 'REACTION']});
-const { getPokemon } = require('./utils/pokemon');
 client.login(process.env.BOT_TOKEN);
 const guildInvites = new Map();
 let estados = [">>ping para ver el lag", "Se vienen nuevos comandos", "GG"]
@@ -24,26 +24,6 @@ client.on('ready', () => {
 
 
 
-client.on('guildMemberAdd', async member => {
-
-    const cachedInvites = guildInvites.get(member.guild.id);
-    const newInvites = await member.guild.fetchInvites();
-    guildInvites.set(member.guild.id, newInvites);
-    try {
-        const usedInvite = newInvites.find(inv => cachedInvites.get(inv.code).uses < inv.uses);
-        const embed = new MessageEmbed()
-            .setDescription(`${member.user.tag} es el  ${member.guild.memberCount} en unirse.\nSe ha unido usando la invitacion de  ${usedInvite.inviter.tag}\nNumero de usos de la invitacion: ${usedInvite.uses}`)
-            .setTimestamp()
-            .setTitle(`${usedInvite.url}`);
-        const welcomeChannel = member.guild.channels.cache.find(channel => channel.id === '725411095631757476');
-        if(welcomeChannel) {
-            welcomeChannel.send(embed).catch(err => console.log(err));
-        }
-    }
-    catch(err) {
-        console.log(err);
-    }
-});
 
 
 var prefix = (process.env.PREFIX);
@@ -52,6 +32,31 @@ var prefix = (process.env.PREFIX);
 client.on("message", (message) => {
 const args = message.content.slice(prefix.length).trim().split(/ +/g);
 const command = args.shift().toLowerCase();
+if (msg.content.startsWith(prefix+"pokemon")){
+    var pkmn = msg.content.toString().toLowerCase();
+    pkmn = pkmn.substring(9);
+    for(var i=0;i<pokemon.length;i++){
+        if(pkmn == pokemon[i]._engName.toLowerCase() || pkmn == pokemon[i]._frName.toLowerCase() || pkmn == pokemon[i]._nb){
+            var text = "__You selected__\n";
+            text += "**N° "+pokemon[i]._nb+"** \n";
+            text += "English name: **"+pokemon[i]._engName+"** \n";
+             text += "French name: **"+pokemon[i]._frName+"** \n";
+            text += "Type: **"+pokemon[i]._type+" "+pokemon[i]._type2+"**\n";
+            text += "Catch Ratio: **"+pokemon[i]._catchRate+"**\n\n";
+            text += "__Base Stats__\n";
+            text += "HP: **"+pokemon[i]._baseStats._hp+"**\n";
+            text += "Atk: **"+pokemon[i]._baseStats._atk+"**\n";
+            text += "Def: **"+pokemon[i]._baseStats._def+"**\n";
+            text += "S. Atk: **"+pokemon[i]._baseStats._sAtk+"**\n";
+            text += "S. Def: **"+pokemon[i]._baseStats._sDef+"**\n";
+            text += "Spd: **"+pokemon[i]._baseStats._spd+"**";
+            msg.reply(text);
+        }
+    }
+}
+});
+
+
 
   if (command === 'ping') {
   
@@ -67,36 +72,4 @@ const command = args.shift().toLowerCase();
             }
 
 
-});
-client.on('message', async message => {
-    if(message.author.bot) return;
-    if(message.content.toLowerCase().startsWith('>>pokemon')) {
-        const pokemon = message.content.toLowerCase().split(" ")[1];
-        try {
-            const pokeData = await getPokemon(pokemon);
-            const { 
-                sprites, 
-                stats, 
-                weight, 
-                name, 
-                id, 
-                base_experience,
-                abilities,
-                types
-            } = pokeData;
-            const embed = new MessageEmbed();
-            embed.setTitle(`${name} #${id}`)
-            embed.setThumbnail(`${sprites.front_default}`);
-            stats.forEach(stat => embed.addField(stat.stat.name, stat.base_stat, true));
-            types.forEach(type => embed.addField('Type', type.type.name, true));
-            embed.addField('Weight', weight);
-            embed.addField('Base Experience', base_experience);
-            message.channel.send(embed);
-        }
-        catch(err) {
-            console.log(err);
-            message.channel.send(`Pokemon ${pokemon} does not exist.`);
-        }
-    }
-});
 
