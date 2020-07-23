@@ -39,6 +39,9 @@ if (message.content.startsWith(prefix+"pokemon")){
     pkmn = pkmn.substring(9);
     for(var i=0;i<pokemon.length;i++){
         if(pkmn == pokemon[i]._engName.toLowerCase() || pkmn == pokemon[i]._frName.toLowerCase() || pkmn == pokemon[i]._nb){
+            const embed = new Discord.MessageEmbed() 
+            .setTitle("**Pokémon**")
+            .addField("**Nombre:**", pokemon[i]._nb, false)
             var text = "__You selected__\n";
             text += "**N° "+pokemon[i]._nb+"** \n";
             text += "English name: **"+pokemon[i]._engName+"** \n";
@@ -52,7 +55,7 @@ if (message.content.startsWith(prefix+"pokemon")){
             text += "S. Atk: **"+pokemon[i]._baseStats._sAtk+"**\n";
             text += "S. Def: **"+pokemon[i]._baseStats._sDef+"**\n";
             text += "Spd: **"+pokemon[i]._baseStats._spd+"**";
-            message.reply(text);
+            message.channel.send(embed);
         }
     }
 }
