@@ -8,7 +8,6 @@ client.login(process.env.BOT_TOKEN);
 let estados = [">>ping para ver el lag", "Se vienen nuevos comandos", "GG"]
 let ac = ["WATCHING", "PLAYING"]
 
-client.on('inviteCreate', async invite => guildInvites.set(invite.guild.id, await invite.guild.fetchInvites()));
 client.on('ready', () => {
     setInterval(function(){
         let estado = estados[Math.floor(Math.random()*estados.length)]
@@ -53,7 +52,7 @@ if (message.content.startsWith(prefix+"pokemon")){
             text += "S. Atk: **"+pokemon[i]._baseStats._sAtk+"**\n";
             text += "S. Def: **"+pokemon[i]._baseStats._sDef+"**\n";
             text += "Spd: **"+pokemon[i]._baseStats._spd+"**";
-            msg.reply(text);
+            message.reply(text);
         }
     }
 }
