@@ -42,9 +42,12 @@ if (message.content.startsWith(prefix+"pokemon")){
         if(pkmn == pokemon[i]._engName.toLowerCase() || pkmn == pokemon[i]._frName.toLowerCase() || pkmn == pokemon[i]._nb){
             const embed = new Discord.MessageEmbed() 
             .setColor("RANDOM")
+            .setThumbnail(ico.png)
             .setTitle("**Pokémon**")
             .addField("**Número:**", pokemon[i]._nb, false)
             .addField("**Nombre:**", pokemon[i]._engName, false)
+            .addField("**Tipo:**", pokemon[i]._type+" "+_type2, false)
+            
             var text = "__You selected__\n";
             text += "**N° "+pokemon[i]._nb+"** \n";
             text += "English name: **"+pokemon[i]._engName+"** \n";
