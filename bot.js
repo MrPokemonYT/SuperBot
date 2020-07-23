@@ -44,9 +44,19 @@ if (message.content.startsWith(prefix+"pokemon")){
             .setColor("RANDOM")
             .setThumbnail(`https://cdn.glitch.com/d3872f22-6987-4c30-90d1-3e58e3f83953%2Fico.png?v=1595496208978`)
             .setTitle("**Pokémon**")
-            .addField("**Número:**", pokemon[i]._nb, false)
-            .addField("**Nombre:**", pokemon[i]._engName, false)
-            .addField("**Tipo:**", pokemon[i]._type+" "+pokemon[i]._type2, false)
+            .setAuthor('https://cdn.glitch.com/d3872f22-6987-4c30-90d1-3e58e3f83953%2Fpokedex.png?v=1595497624647', PokeDex)
+            .addField("*Número:*", pokemon[i]._nb, false)
+            .addField("*Nombre:*", pokemon[i]._engName, false)
+            .addField("*Tipo:*", pokemon[i]._type+" y "+pokemon[i]._type2, false)
+            .addField("*Radio de captura:*", pokemon[i]._catchRate, false)
+            .addField("*Tipo:*", pokemon[i]._type+" y "+pokemon[i]._type2, false)
+            .addField("**__Estadísticas Base__**", false)
+            .addField("*Salud:*", pokemon[i]._hp, false)
+            .addField("*Ataque:*", pokemon[i]._atk, false)
+            .addField("*Defensa:*", pokemon[i]._def, false)
+            .addField("*Velocidad:*", pokemon[i]._spd, false)
+            .addField("*Velocidad de ataque:*", pokemon[i]._sAtk, false)
+            .addField("*Velocidad de defensa:*", pokemon[i]._sDef, false)
 
             var text = "__You selected__\n";
             text += "**N° "+pokemon[i]._nb+"** \n";
